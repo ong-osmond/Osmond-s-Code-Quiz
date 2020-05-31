@@ -5,8 +5,9 @@ var questionItem = document.querySelector("#question");
 var choices = document.querySelector("#choices");
 
 var userScore = 0;
-var timerLimit = 20;
+var timerLimit = 40;
 var timeLeft = timerLimit;
+var myTimer;
 var timerEnd = false;
 
 var questionsArray = [
@@ -49,21 +50,26 @@ var questionsAnswered = [];
 startButton.addEventListener("click", function (event) {
     event.preventDefault();
     startButton.remove();
-    startTimer();
+    myTimer = setInterval(startTimer, 1000);
+    pickRandomQuestion();
 }
 );
 
 function startTimer() {
-    timeLeftSpan.innerHTML = timerLimit;
-    setInterval(function () {
-        timeLeft--;
-        timeLeftSpan.innerHTML = timeLeft;
-    }, 1000);
-    pickRandomQuestion();
-};
+    timeLeft--;
+    timeLeftSpan.innerHTML = timeLeft;
+    if (timeLeft === 0) {
+        endQuiz();
+    }
+}
 
 function endQuiz() {
-    alert("Time is up!");
+    clearInterval(myTimer);
+    questionItem.textContent = "Thank you for playing. Your score is: " + userScore + "\n Enter your initials.";
+    while (choices.hasChildNodes()) {
+        choices.removeChild(choices.firstChild);
+    };
+    rebuildQuestionsArray();
 }
 
 function pickRandomQuestion() {
@@ -108,8 +114,7 @@ function compareChoiceWithCorrectAnswer(userChoice, correctAnswer) {
         choices.removeChild(choices.firstChild);
     }
     if (questionsArray.length == 0) {
-        questionItem.textContent = "Thank you for playing. Your score is: " + userScore + "\n Enter your initials.";
-        rebuildQuestionsArray();
+        endQuiz();
     } else pickRandomQuestion();
 }
 
