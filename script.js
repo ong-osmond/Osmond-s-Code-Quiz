@@ -1,7 +1,10 @@
-var viewScoresSpan = document.querySelector("#view-scores");
-var userScoreSpan = document.querySelector("#user-score");
+var viewScoresButton = document.querySelector("#view-scores");
+var viewScoresModal = document.querySelector("#scoresModal");
+var viewScoresModalContent = document.querySelector(".modal-body");
+//var userScoreSpan = document.querySelector("#user-score");
 var timeLeftSpan = document.querySelector("#time-left");
 var startButton = document.querySelector("#startQuiz");
+var startQuizBlock = document.querySelector("#startQuiz");
 var questionItem = document.querySelector("#question");
 var choices = document.querySelector("#choices");
 var result = document.querySelector("#result");
@@ -13,20 +16,22 @@ var timeLeft = timerLimit;
 var myTimer;
 var timerEnd = false;
 
-viewScoresSpan.addEventListener("click", function (event) {
-   // alert("High score is " + localStorage.highScore + " by " + localStorage.initials);
-   if(localStorage.getItem("initialsAndScores") === null ||
-    localStorage.getItem("initialsAndScores") === 'undefined')  {
-       alert("No scores saved... yet!");
-       return;
-   }
-   var alertScores = JSON.parse(localStorage.initialsAndScores);
-   var alertScoreDisplay = "";
-   for (var i = 0; i < alertScores.length; i++) {
-        alertScoreDisplay = alertScoreDisplay +
-        "\n" + alertScores[i].score + " by " + alertScores[i].initials;
-   }
-   alert(alertScoreDisplay);
+
+viewScoresButton.addEventListener("click", function (event) {
+    // alert("High score is " + localStorage.highScore + " by " + localStorage.initials);
+    if (localStorage.getItem("initialsAndScores") === null ||
+        localStorage.getItem("initialsAndScores") === 'undefined') {
+        viewScoresModalContent.innerHTML = "No scores saved... yet!";
+        return;
+    } else
+    viewScoresModalContent.innerHTML = "";
+    var alertScores = JSON.parse(localStorage.initialsAndScores);
+    var alertScoreDisplay = "";
+    for (var i = 0; i < alertScores.length; i++) {
+        var scoreItem = document.createElement("li");
+        scoreItem.textContent = alertScores[i].score + " by " + alertScores[i].initials;
+        viewScoresModalContent.appendChild(scoreItem);
+    }
 }
 );
 
@@ -94,7 +99,7 @@ var questionsAnswered = [];
 startButton.addEventListener("click", function (event) {
     event.preventDefault();
     hideEndQuizBlock();
-    viewScoresSpan.style.display = "none";
+    viewScoresButton.style.display = "none";
     userScore = 0;
     timeLeft = timerLimit;
     questionItem.textContent = "";
@@ -122,7 +127,7 @@ function endQuiz() {
     while (choices.hasChildNodes()) {
         choices.removeChild(choices.firstChild);
     };
-    viewScoresSpan.style.display = "block";
+    viewScoresButton.style.display = "block";
     displayEndQuizBlock();
 }
 
@@ -134,10 +139,12 @@ function displayEndQuizBlock() {
     initials.setAttribute("type", "text");
     endQuizBlock.appendChild(initials);
     var saveScore = document.createElement("button");
+    saveScore.setAttribute("class", "btn btn-primary btn-sm");
+    saveScore.setAttribute("style", "margin : 10px");
     saveScore.innerHTML = "Submit";
     endQuizBlock.appendChild(saveScore);
     timeLeftSpan.innerHTML = timerLimit;
-    startButton.style.display = "block";
+    //startButton.style.display = "block";
     saveScore.addEventListener("click", function (event) {
         event.preventDefault();
         //Clear previous initials and score
@@ -156,17 +163,18 @@ function displayEndQuizBlock() {
         };
         //Create or add local storage initialsAndScores
         if (localStorage.getItem("initialsAndScores") === null ||
-        localStorage.getItem("initialsAndScores") === 'undefined')  {
+            localStorage.getItem("initialsAndScores") === 'undefined') {
             var initialsAndScoreInputArray = [];
             initialsAndScoreInputArray.push(initialsAndScoreInput);
-            localStorage.setItem("initialsAndScores",JSON.stringify(initialsAndScoreInputArray));
+            localStorage.setItem("initialsAndScores", JSON.stringify(initialsAndScoreInputArray));
         }
         else {
             var initialsAndScoreInputArray = JSON.parse(localStorage.initialsAndScores); //retrieve existing initialsAndScores
             initialsAndScoreInputArray.push(initialsAndScoreInput);
-            localStorage.setItem("initialsAndScores",JSON.stringify(initialsAndScoreInputArray));
+            localStorage.setItem("initialsAndScores", JSON.stringify(initialsAndScoreInputArray));
         }
         hideEndQuizBlock();
+        startQuizBlock.style.display = "block";
     }
     );
 }
@@ -178,7 +186,7 @@ function hideEndQuizBlock() {
         endQuizBlock.removeChild(child);
         child = endQuizBlock.lastElementChild;
     };
-    userScoreSpan.innerHTML = 0;
+    //userScoreSpan.innerHTML = 0;
     timeLeftSpan.innerHTML = timerLimit;
 }
 
@@ -194,7 +202,8 @@ function pickRandomQuestion() {
     //Display the choices
     for (var c = 0; c < questionsArray[questionNumber].choices.length; c++) {
         var choice = (questionsArray[questionNumber].choices[c]);
-        var li = document.createElement("li");
+        var li = document.createElement("button");
+        li.setAttribute("class", "btn btn-primary btn-sm btn-block");
         li.textContent = choice;
         choices.appendChild(li);
         var correctAnswer = (questionsArray[questionNumber].answer);
@@ -208,20 +217,18 @@ function pickRandomQuestion() {
     };
     questionsAnswered.push(question);
     questionsArray.splice(questionNumber, 1);
-    console.log(questionsArray.length);
 }
 
 function checkAnswer(userChoice, correctAnswer) {
     if (userChoice == correctAnswer) {
-        result.textContent = "You are correct!";
+        result.textContent = "Correct";
         userScore++;
-        userScoreSpan.textContent = userScore;
+      //  userScoreSpan.textContent = userScore;
     } else {
         result.textContent = "Sorry, wrong answer!";
         timeLeft = timeLeft - 5;
         timeLeftSpan.innerHTML = timeLeft;
     }
-
     var choices = document.getElementById("choices");
     while (choices.hasChildNodes()) {
         choices.removeChild(choices.firstChild);

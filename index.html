@@ -6,25 +6,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <!-- <link rel="stylesheet" href="./style.css" /> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <title>Javascript Quiz Game</title>
 </head>
 
 <body>
-    <div class="question">
-        <a id="view-scores" href="#">View Scores</a>
-        <p>Your score: 
-            <span id="user-score">0</span>
-        </P>
-        <P>Time left:
-            <span id="time-left"></span>
-        </P>    
-        <button id="startQuiz">Start Quiz</button>
-        <h2 id="question"></h2>
-        <ol id="choices" type="a"></ol>
-        <h3 id="result"></h3>
-        <h3 id="endQuiz"></h3>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <h3 class="navbar-brand active">Osmond's Javascript Quiz Game</h3>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#scoresModal" id="view-scores">View Scores
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Time left: <span id="time-left"></span></a>
+            </li>
+        </ul>
+    </nav>
+
+    <div id="startQuiz" class="container" style="margin: 10px;">
+        <h5 class="my-auto" style="margin : 10px">Welcome to the JAVASCRIPT QUIZ GAME. Answer as many questions as you
+            can. <br>
+            Each wrong answer will remove 5 seconds off the clock. If you answer all questions before time ends, the
+            number of remaining seconds is added to your final score! Good luck.
+            <br>
+            <button id="startQuiz" class="btn btn-primary btn-sm">Start Quiz</button>
+        </h5>
     </div>
+    <div>
+        <div class="my-auto"></div>
+        <h5 id="question" style="width : 50%" style="margin : 20px"></h5>
+        <ol id="choices" style="width : 50%"></ol>
+    </div>
+    <p id="result"></p>
+    <p id="endQuiz"></p>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="scoresModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Scores</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="./script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+
 </body>
 
 </html>
