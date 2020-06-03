@@ -18,29 +18,34 @@ var timerEnd = false;
 
 
 viewScoresButton.addEventListener("click", function (event) {
-    if (localStorage.getItem("initialsAndScores").value == null ||
+    viewScoresModalContent.innerHTML = "No scores saved... yet!";
+    if ((JSON.parse(localStorage.initialsAndScores) == null) || 
+    localStorage.getItem("initialsAndScores").valueOf() == null ||
         localStorage.getItem("initialsAndScores") == 'undefined') {
         viewScoresModalContent.innerHTML = "No scores saved... yet!";
         return;
-    } 
-    else
-    viewScoresModalContent.innerHTML = "";
-    var alertScores = JSON.parse(localStorage.initialsAndScores);
-    var alertScoreDisplay = "";
-    for (var i = 0; i < alertScores.length; i++) {
-        var scoreItem = document.createElement("li");
-        scoreItem.textContent = alertScores[i].score + " by " + alertScores[i].initials;
-        viewScoresModalContent.appendChild(scoreItem);
+    }
+    else {
+        console.log("Local Storage: " + localStorage.initialsAndScores);
+        viewScoresModalContent.innerHTML = "";
+        var alertScores = JSON.parse(localStorage.initialsAndScores);
+        var alertScoreDisplay = "";
+        for (var i = 0; i < alertScores.length; i++) {
+            var scoreItem = document.createElement("li");
+            scoreItem.textContent = alertScores[i].score + " by " + alertScores[i].initials;
+            viewScoresModalContent.appendChild(scoreItem);
+        }
     }
 }
 );
 
-clearScores.addEventListener("click", function() {
-    if (localStorage.getItem("initialsAndScores").value == null ||
-        localStorage.getItem("initialsAndScores") == 'undefined') {
-        return;
-    } else localStorage.setItem("initialsAndScores", null);
-        console.log(localStorage.initialsAndScores);
+clearScores.addEventListener("click", function () {
+    // if (localStorage.getItem("initialsAndScores").valueOf() == null ||
+    //     localStorage.getItem("initialsAndScores") == 'undefined') {
+    //     return;
+    // } else 
+    localStorage.setItem("initialsAndScores", null);
+    console.log(localStorage.initialsAndScores);
 }
 );
 
@@ -149,7 +154,7 @@ function displayEndQuizBlock() {
     endQuizBlock.style.display = "block";
     var initials = document.createElement("input");
     initials.setAttribute("type", "text");
-    initials.setAttribute("placeholder","Enter your intials to save your score.");
+    initials.setAttribute("placeholder", "Enter your intials to save your score.");
     endQuizBlock.appendChild(initials);
     var saveScore = document.createElement("button");
     saveScore.setAttribute("class", "btn btn-primary btn-sm");
@@ -174,6 +179,7 @@ function displayEndQuizBlock() {
             alert("Initials cannot be blank.");
             return;
         };
+
         //Create or add local storage initialsAndScores
         if (localStorage.getItem("initialsAndScores") === null ||
             localStorage.getItem("initialsAndScores") === 'undefined') {
@@ -182,7 +188,11 @@ function displayEndQuizBlock() {
             localStorage.setItem("initialsAndScores", JSON.stringify(initialsAndScoreInputArray));
         }
         else {
-            var initialsAndScoreInputArray = JSON.parse(localStorage.initialsAndScores); //retrieve existing initialsAndScores
+            var initialsAndScoreInputArray = [];
+            console.log("Heeere: " + localStorage.getItem("initialsAndScores") + "and" + initialsAndScoreInput);
+            if (JSON.parse(localStorage.initialsAndScores) != null) {
+                initialsAndScoreInputArray = JSON.parse(localStorage.initialsAndScores);
+            } //retrieve existing initialsAndScores
             initialsAndScoreInputArray.push(initialsAndScoreInput);
             localStorage.setItem("initialsAndScores", JSON.stringify(initialsAndScoreInputArray));
         }
@@ -238,7 +248,7 @@ function checkAnswer(userChoice, correctAnswer) {
     if (userChoice == correctAnswer) {
         result.textContent = "Correct";
         userScore++;
-      //  userScoreSpan.textContent = userScore;
+        //  userScoreSpan.textContent = userScore;
     } else {
         result.textContent = "Sorry, wrong answer!";
         timeLeft = timeLeft - 5;
