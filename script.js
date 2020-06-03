@@ -1,4 +1,4 @@
-var highScoreSpan = document.querySelector("#high-score");
+var viewScoresSpan = document.querySelector("#view-scores");
 var userScoreSpan = document.querySelector("#user-score");
 var timeLeftSpan = document.querySelector("#time-left");
 var startButton = document.querySelector("#startQuiz");
@@ -12,11 +12,21 @@ var timerLimit = 30;
 var timeLeft = timerLimit;
 var myTimer;
 var timerEnd = false;
-localStorage.setItem("initials", "---");
-localStorage.setItem("highScore", 0);
 
-highScoreSpan.addEventListener("click", function (event) {
-    alert("High score is " + localStorage.highScore + " by " + localStorage.initials);
+viewScoresSpan.addEventListener("click", function (event) {
+   // alert("High score is " + localStorage.highScore + " by " + localStorage.initials);
+   if(localStorage.getItem("initialsAndScores") === null ||
+    localStorage.getItem("initialsAndScores") === 'undefined')  {
+       alert("No scores saved... yet!");
+       return;
+   }
+   var alertScores = JSON.parse(localStorage.initialsAndScores);
+   var alertScoreDisplay = "";
+   for (var i = 0; i < alertScores.length; i++) {
+        alertScoreDisplay = alertScoreDisplay +
+        "\n" + alertScores[i].score + " by " + alertScores[i].initials;
+   }
+   alert(alertScoreDisplay);
 }
 );
 
@@ -83,7 +93,8 @@ var questionsAnswered = [];
 
 startButton.addEventListener("click", function (event) {
     event.preventDefault();
-    hideEndQuizBlock()
+    hideEndQuizBlock();
+    viewScoresSpan.style.display = "none";
     userScore = 0;
     timeLeft = timerLimit;
     questionItem.textContent = "";
@@ -111,6 +122,7 @@ function endQuiz() {
     while (choices.hasChildNodes()) {
         choices.removeChild(choices.firstChild);
     };
+    viewScoresSpan.style.display = "block";
     displayEndQuizBlock();
 }
 
@@ -128,19 +140,32 @@ function displayEndQuizBlock() {
     startButton.style.display = "block";
     saveScore.addEventListener("click", function (event) {
         event.preventDefault();
+        //Clear previous initials and score
+        var initialsAndScoreInput = {
+            initials: "",
+            score: 0
+        };
         // Create score object from submission
-        var score = {
-            initialsInput: initials.value.trim(),
+        initialsAndScoreInput = {
+            initials: initials.value.trim(),
             score: userScore
         };
-        if (score.initialsInput === "") {
+        if (initialsAndScoreInput.initials == "") {
             alert("Initials cannot be blank.");
             return;
         };
-        if (score > localStorage.highScore) {
-            localStorage.setItem("initials", score.initialsInput);
-            localStorage.setItem("highScore", score.score);
-        };
+        //Create or add local storage initialsAndScores
+        if (localStorage.getItem("initialsAndScores") === null ||
+        localStorage.getItem("initialsAndScores") === 'undefined')  {
+            var initialsAndScoreInputArray = [];
+            initialsAndScoreInputArray.push(initialsAndScoreInput);
+            localStorage.setItem("initialsAndScores",JSON.stringify(initialsAndScoreInputArray));
+        }
+        else {
+            var initialsAndScoreInputArray = JSON.parse(localStorage.initialsAndScores); //retrieve existing initialsAndScores
+            initialsAndScoreInputArray.push(initialsAndScoreInput);
+            localStorage.setItem("initialsAndScores",JSON.stringify(initialsAndScoreInputArray));
+        }
         hideEndQuizBlock();
     }
     );
