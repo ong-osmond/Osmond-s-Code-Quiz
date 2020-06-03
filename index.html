@@ -14,34 +14,48 @@
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <h3 class="navbar-brand active">Osmond's Javascript Quiz Game</h3>
+        <h3 class="navbar-brand active">Javascript Quiz Game</h3>
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#" data-toggle="modal" data-target="#scoresModal" id="view-scores">View Scores
-                </a>
-            </li>
+            <!-- <li class="nav-item active">
+                <a id="view-scores" class="nav-link" href="#" data-toggle="modal" data-target="#scoresModal">View
+                    Scores</a>
+            </li> -->
             <li class="nav-item active">
                 <a class="nav-link" href="#">Time left: <span id="time-left"></span></a>
             </li>
         </ul>
     </nav>
 
-    <div id="startQuiz" class="container" style="margin: 10px;">
-        <h5 class="my-auto" style="margin : 10px">Welcome to the JAVASCRIPT QUIZ GAME. Answer as many questions as you
+    <div id="startQuiz" class="container"
+        style="margin: 0 auto; margin-top: 25px; border: none; height: auto; width: 50%;">
+        <h4 style="text-align : center;"><b>Welcome to the JAVASCRIPT QUIZ GAME!</b></h4>
+        <br>
+        <h6 class="my-auto" style="margin : 10px; margin-top: .80em; margin-bottom: .80em;
+            text-align : center; 
+            font-family: Roboto, 'Open Sans', 'Helvetica Neue', sans-serif;
+            ">
+            Answer as many questions as you
             can. <br>
             Each wrong answer will remove 5 seconds off the clock. If you answer all questions before time ends, the
-            number of remaining seconds is added to your final score! Good luck.
+            number of remaining seconds is added to your final score! <br>
+            Good luck!
             <br>
-            <button id="startQuiz" class="btn btn-primary btn-sm">Start Quiz</button>
-        </h5>
+        </h6>
     </div>
-    <div>
-        <div class="my-auto"></div>
-        <h5 id="question" style="width : 50%" style="margin : 20px"></h5>
-        <ol id="choices" style="width : 50%"></ol>
+    <div style="text-align: center; margin: 0 auto; margin-top: 25px; border: none; height: auto; width: 50%;">
+        <button id="startQuizButton" class="btn btn-primary btn-sm">Start Quiz</button>
+
+        <button id="view-scores" class="btn btn-primary btn-sm" href="#" data-toggle="modal" data-target="#scoresModal">View
+            Scores</button>
+        
+        <h5 id="question" style="width : 75%" style="margin : 10px"></h5>
+        <ol id="choices" style="width : 75%"></ol>
     </div>
-    <p id="result"></p>
-    <p id="endQuiz"></p>
+    <div style="margin: 0 auto; border: none; height: auto; width: 50%;">
+        <hr>
+        <p id="result"></p>
+        <p id="endQuiz"></p>
+    </div>
     </div>
 
     <!-- Modal -->
@@ -59,6 +73,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" id="clear-scores">Clear Scores</button>
                 </div>
             </div>
         </div>
