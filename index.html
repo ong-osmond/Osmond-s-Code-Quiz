@@ -45,15 +45,19 @@
     <div style="text-align: center; margin: 0 auto; margin-top: 25px; border: none; height: auto; width: 50%;">
         <button id="startQuizButton" class="btn btn-primary btn-sm">Start Quiz</button>
 
-        <button id="view-scores" class="btn btn-primary btn-sm" href="#" data-toggle="modal" data-target="#scoresModal">View
+        <button id="view-scores" class="btn btn-primary btn-sm" href="#" data-toggle="modal"
+            data-target="#scoresModal">View
             Scores</button>
-        
-        <h5 id="question" style="width : 75%" style="margin : 10px"></h5>
-        <ol id="choices" style="width : 75%"></ol>
+
+        <div id="quizProgress" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0"
+            aria-valuemin="0" aria-valuemax="100"></div>
+        <br>
+        <h5 id="question"></h5>
+        <ol id="choices" style="padding: 0%;"></ol>
     </div>
     <div style="margin: 0 auto; border: none; height: auto; width: 50%;">
         <hr>
-        <p id="result"></p>
+        <p id="result" style="text-align: right"></p>
         <p id="endQuiz"></p>
     </div>
     </div>

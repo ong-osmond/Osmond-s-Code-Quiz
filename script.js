@@ -5,6 +5,7 @@ var clearScores = document.querySelector("#clear-scores");
 var timeLeftSpan = document.querySelector("#time-left");
 var startButton = document.querySelector("#startQuizButton");
 var startQuizBlock = document.querySelector("#startQuiz");
+var quizProgress = document.querySelector("#quizProgress");
 var questionItem = document.querySelector("#question");
 var choices = document.querySelector("#choices");
 var result = document.querySelector("#result");
@@ -15,37 +16,33 @@ var timerLimit = 30;
 var timeLeft = timerLimit;
 var myTimer;
 var timerEnd = false;
+var questionProgress = 0;
 
 
 viewScoresButton.addEventListener("click", function (event) {
-    viewScoresModalContent.innerHTML = "No scores saved... yet!";
-    if ((JSON.parse(localStorage.initialsAndScores) == null) || 
-    localStorage.getItem("initialsAndScores").valueOf() == null ||
+    if ((localStorage.initialsAndScores == null) ||
+        localStorage.getItem("initialsAndScores").valueOf() == null ||
         localStorage.getItem("initialsAndScores") == 'undefined') {
         viewScoresModalContent.innerHTML = "No scores saved... yet!";
         return;
     }
     else {
-        console.log("Local Storage: " + localStorage.initialsAndScores);
         viewScoresModalContent.innerHTML = "";
         var alertScores = JSON.parse(localStorage.initialsAndScores);
-        var alertScoreDisplay = "";
+        alertScores.sort((a, b) => (a.score < b.score) ? 1 : -1);
         for (var i = 0; i < alertScores.length; i++) {
             var scoreItem = document.createElement("li");
             scoreItem.textContent = alertScores[i].score + " by " + alertScores[i].initials;
             viewScoresModalContent.appendChild(scoreItem);
-        }
+        };
+
     }
 }
 );
 
 clearScores.addEventListener("click", function () {
-    // if (localStorage.getItem("initialsAndScores").valueOf() == null ||
-    //     localStorage.getItem("initialsAndScores") == 'undefined') {
-    //     return;
-    // } else 
-    localStorage.setItem("initialsAndScores", null);
-    console.log(localStorage.initialsAndScores);
+    localStorage.removeItem("initialsAndScores");
+    viewScoresModalContent.innerHTML = "No scores saved... yet!";
 }
 );
 
@@ -109,6 +106,7 @@ var questionsArray = [
     }
 ];
 
+var totalQuestions = questionsArray.length;
 var questionsAnswered = [];
 
 startButton.addEventListener("click", startQuiz);
@@ -120,6 +118,7 @@ function startQuiz() {
     startQuizBlock.style.display = "none";
     viewScoresButton.style.display = "none";
     userScore = 0;
+    questionProgress = 0;
     timeLeft = timerLimit;
     questionItem.textContent = "";
     startButton.style.display = "none";
@@ -150,11 +149,13 @@ function endQuiz() {
 
 function displayEndQuizBlock() {
     questionItem.textContent = "Your final score is " + userScore + ".";
-    result.textContent = "";
+    questionProgressPercentage = 0;
+    quizProgress.setAttribute("style", "width : 0");
+    quizProgress.setAttribute("aria-valuenow", "0");
     endQuizBlock.style.display = "block";
     var initials = document.createElement("input");
     initials.setAttribute("type", "text");
-    initials.setAttribute("placeholder", "Enter your intials to save your score.");
+    initials.setAttribute("placeholder", "Enter your intials.");
     endQuizBlock.appendChild(initials);
     var saveScore = document.createElement("button");
     saveScore.setAttribute("class", "btn btn-primary btn-sm");
@@ -165,6 +166,7 @@ function displayEndQuizBlock() {
     //startButton.style.display = "block";
     saveScore.addEventListener("click", function (event) {
         event.preventDefault();
+        result.textContent = "";
         //Clear previous initials and score
         var initialsAndScoreInput = {
             initials: "",
@@ -189,7 +191,6 @@ function displayEndQuizBlock() {
         }
         else {
             var initialsAndScoreInputArray = [];
-            console.log("Heeere: " + localStorage.getItem("initialsAndScores") + "and" + initialsAndScoreInput);
             if (JSON.parse(localStorage.initialsAndScores) != null) {
                 initialsAndScoreInputArray = JSON.parse(localStorage.initialsAndScores);
             } //retrieve existing initialsAndScores
@@ -223,6 +224,11 @@ function pickRandomQuestion() {
     //Randomly pick a question
     var questionNumber = [Math.floor(Math.random() * questionsArray.length)];
     var question = questionsArray[questionNumber];
+    //Update progress bar
+    var questionProgressPercentage = Math.round(((questionProgress / totalQuestions)) * 100);
+    quizProgress.setAttribute("style", `width : ${questionProgressPercentage}%; height: 15px`);
+    quizProgress.setAttribute("aria-valuenow", questionProgressPercentage);
+    quizProgress.innerHTML = `${questionProgressPercentage}%`;
     questionItem.innerHTML = question.question;
     //Display the choices
     for (var c = 0; c < questionsArray[questionNumber].choices.length; c++) {
@@ -236,6 +242,7 @@ function pickRandomQuestion() {
         li.addEventListener("click", function (event) {
             result.textContent = "";
             var userChoice = event.target.innerHTML;
+            questionProgress++;
             checkAnswer(userChoice, correctAnswer);
         }
         )
@@ -247,10 +254,12 @@ function pickRandomQuestion() {
 function checkAnswer(userChoice, correctAnswer) {
     if (userChoice == correctAnswer) {
         result.textContent = "Correct";
+        result.setAttribute("style", "color : green; text-align: right");
         userScore++;
         //  userScoreSpan.textContent = userScore;
     } else {
         result.textContent = "Sorry, wrong answer!";
+        result.setAttribute("style", "color : red; text-align: right");
         timeLeft = timeLeft - 5;
         timeLeftSpan.innerHTML = timeLeft;
     }
@@ -258,6 +267,9 @@ function checkAnswer(userChoice, correctAnswer) {
     while (choices.hasChildNodes()) {
         choices.removeChild(choices.firstChild);
     }
+    setTimeout(function () {
+        result.textContent = ""
+    }, 1000);
     if (questionsArray.length == 0 ||
         timeLeft <= 0) {
         endQuiz();
