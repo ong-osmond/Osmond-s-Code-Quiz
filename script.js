@@ -176,7 +176,7 @@ function startQuiz() {
 function startTimer() {
     timeLeft--;
     timeLeftSpan.textContent = `${timeLeft}s`;
-    if (timeLeft === 0) {
+    if (timeLeft <= 0) {
         endQuiz(); //Calls the endQuiz function
     }
 }
@@ -194,7 +194,7 @@ function endQuiz() {
 
 //Displays the end quiz message and the initials entry section
 function displayEndQuizBlock() {
-    if (timeLeft === 0) {
+    if (timeLeft <= 0) {
         questionItem.textContent = "Time's up! Your final score is " + userScore + ".";
     } else {
         questionItem.textContent = "All done! Your final score is " + userScore + ".";
@@ -234,8 +234,8 @@ function displayEndQuizBlock() {
             return;
         };
         //Create or add local storage initialsAndScores
-        if (localStorage.getItem("initialsAndScores") === null ||
-            localStorage.getItem("initialsAndScores") === 'undefined') {
+        if (localStorage.getItem("initialsAndScores") == null ||
+            localStorage.getItem("initialsAndScores") == 'undefined') {
             var initialsAndScoreInputArray = []; //Create an initialsAndScoreInputArray
             initialsAndScoreInputArray.push(initialsAndScoreInput);
             localStorage.setItem("initialsAndScores", JSON.stringify(initialsAndScoreInputArray));
