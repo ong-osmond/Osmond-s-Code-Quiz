@@ -1,4 +1,4 @@
-## Welcome to my Javascript Code Quiz.
+## Welcome to my Javascript Quiz Game.
 
 You can find the application here: https://ong-osmond.github.io/Osmond-s-Code-Quiz/.
 
@@ -13,10 +13,10 @@ You can find the application here: https://ong-osmond.github.io/Osmond-s-Code-Qu
 ![Quiz in Progress](/assets/images/02-Quiz-in-progress.png)
 
 A question is randomly selected from a list. (Quiz questions credits to https://www.geeksforgeeks.org/)
-Choose your answer to the question by clicking or tapping on one of the choices.
-The result of the previous question is displayed on the bottom of the page (the text disappears after one second).
-The timer is active and displays how many seconds are left to finish the quiz.
-A quiz progress bar shows % completion of the quiz.
+<br>Choose your answer to the question by clicking or tapping on one of the choices.
+<br>The result of the previous question is displayed on the bottom of the page (the text disappears after one second).
+<br>The timer is active and displays how many seconds are left to finish the quiz.
+<br>A quiz progress bar shows % completion of the quiz.
 
 ![Quiz finished](/assets/images/03-Quiz-finished.png)
 
