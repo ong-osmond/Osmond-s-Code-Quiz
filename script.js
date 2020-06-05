@@ -310,7 +310,11 @@ function checkAnswer(userChoice, correctAnswer) {
         result.textContent = "Sorry, wrong answer!";
         result.setAttribute("style", "color : red;");
         timeLeft = timeLeft - 5;
-        timeLeftSpan.textContent = `${timeLeft}s`;
+        if (timeLeft < 0) {
+            timeLeftSpan.textContent = `0s`;
+        } else {
+            timeLeftSpan.textContent = `${timeLeft}s`;
+        };
     };
     clearChoices(); //Clear the choices of the question that has just been answered
     //Clear the result info after 1 second
