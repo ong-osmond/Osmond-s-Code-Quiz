@@ -1,6 +1,8 @@
+/*jshint esversion: 6 */ 
+
 //Assigning variables to the document elements
 var viewScoresButton = document.querySelector("#view-scores");
-var viewScoresModal = document.querySelector("#scores-modal");
+//var viewScoresModal = document.querySelector("#scores-modal");
 var viewScoresModalContent = document.querySelector(".modal-body");
 var clearScores = document.querySelector("#clear-scores");
 var timeLeftSpan = document.querySelector("#time-left");
@@ -22,7 +24,7 @@ timeLeftSpan.textContent = `${timerLimit}s`;
 
 //Questions copied from https://www.geeksforgeeks.org/
 var questionsArray = [
-    q1 = {
+    {
         question: "What is the HTML tag under which one can write the JavaScript code?",
         choices: ["javascript",
             "scripted",
@@ -31,7 +33,7 @@ var questionsArray = [
         ],
         answer: "script"
     },
-    q2 = {
+    {
         question: "Which of the following is the correct syntax to display a text in an alert box using JavaScript?",
         choices: ["alertbox",
             "msg",
@@ -40,7 +42,7 @@ var questionsArray = [
         ],
         answer: "alert"
     },
-    q3 = {
+    {
         question: "What is the correct syntax for referring to an external script?",
         choices: ["script src",
             "script href",
@@ -49,7 +51,7 @@ var questionsArray = [
         ],
         answer: "script src"
     },
-    q4 = {
+    {
         question: "Which of the following is not a reserved word in JavaScript?",
         choices: ["interface",
             "throws",
@@ -58,7 +60,7 @@ var questionsArray = [
         ],
         answer: "program"
     },
-    q5 = {
+    {
         question: "What is the syntax for creating a function in JavaScript named as compute?",
         choices: ["function = compute()",
             "function compute()",
@@ -67,7 +69,7 @@ var questionsArray = [
         ],
         answer: "function compute()"
     },
-    q6 = {
+    {
         question: "What is the JavaScript syntax for printing values in Console?",
         choices: ["print(someValue)",
             "console.log(someValue);",
@@ -76,7 +78,7 @@ var questionsArray = [
         ],
         answer: "console.log(someValue);"
     },
-    q7 = {
+    {
         question: "What is the method in JavaScript used to remove the whitespace at the beginning and end of any string?",
         choices: ["strip()",
             "stripped()",
@@ -85,7 +87,7 @@ var questionsArray = [
         ],
         answer: "trim()"
     },
-    q8 = {
+    {
         question: "In JavaScript, we do not have datatypes like integer and float. What is the function that can be used to check if the number is an integer or not?",
         choices: ["Integer(value)",
             "ifInteger(value)",
@@ -94,7 +96,7 @@ var questionsArray = [
         ],
         answer: "isInteger(value)"
     },
-    q9 = {
+    {
         question: "Which of the following is an advantage of using JavaScript?",
         choices: ["Increased interactivity.",
             "More server interaction.",
@@ -103,7 +105,7 @@ var questionsArray = [
         ],
         answer: "Increased interactivity."
     },
-    q10 = {
+    {
         question: "Which function of an Array object calls a function for each element in the array?",
         choices: ["every()",
             "forEvery()",
@@ -141,7 +143,7 @@ viewScoresButton.addEventListener("click", function(event) {
             scoreItem.textContent = alertScores[i].score + " by " + alertScores[i].initials;
             //scoreItem.setAttribute("style", "")
             scoreOrderList.appendChild(scoreItem);
-        };
+        }
 
     }
 });
@@ -171,7 +173,7 @@ function startQuiz() {
     startButton.style.display = "none"; //Hides the startButton
     myTimer = setInterval(startTimer, 1000); //Calls the startTimer function; counts down by 1 second.
     pickRandomQuestion(); //Calls the pickRandomQuestion function
-};
+}
 
 function startTimer() {
     timeLeft--;
@@ -200,7 +202,7 @@ function displayEndQuizBlock() {
         questionItem.textContent = "All done! Your final score is " + userScore + ".";
     }
     //Resets the questionProgress bar
-    questionProgressPercentage = 0;
+    //var questionProgressPercentage = 0;
     quizProgress.setAttribute("style", "width : 0");
     quizProgress.setAttribute("aria-valuenow", "0");
     //Displays the initials entry and Submit button
@@ -232,15 +234,14 @@ function displayEndQuizBlock() {
         if (initialsAndScoreInput.initials == "") {
             alert("Initials cannot be blank.");
             return;
-        };
+        }
         //Create or add local storage initialsAndScores
+        var initialsAndScoreInputArray = []; //Create an initialsAndScoreInputArray
         if (localStorage.getItem("initialsAndScores") == null ||
             localStorage.getItem("initialsAndScores") == 'undefined') {
-            var initialsAndScoreInputArray = []; //Create an initialsAndScoreInputArray
             initialsAndScoreInputArray.push(initialsAndScoreInput);
             localStorage.setItem("initialsAndScores", JSON.stringify(initialsAndScoreInputArray));
         } else {
-            var initialsAndScoreInputArray = []; //Create an initialsAndScoreInputArray
             if (JSON.parse(localStorage.initialsAndScores) != null) {
                 initialsAndScoreInputArray = JSON.parse(localStorage.initialsAndScores);
             } //Retrieve existing initialsAndScores from local storage
@@ -263,7 +264,7 @@ function hideEndQuizBlock() {
     while (child) {
         endQuizBlock.removeChild(child);
         child = endQuizBlock.lastElementChild;
-    };
+    }
     timeLeftSpan.textContent = `${timerLimit}s`;
 }
 
@@ -293,8 +294,8 @@ function pickRandomQuestion() {
             var userChoice = event.target.textContent;
             questionProgress++;
             checkAnswer(userChoice, correctAnswer); //Calls the checkAnswer function passing two arguments to compare
-        })
-    };
+        });
+    }
     //Move the question that has just been answered to the questionsAnswered array
     questionsAnswered.push(question);
     questionsArray.splice(questionNumber, 1);
@@ -314,12 +315,12 @@ function checkAnswer(userChoice, correctAnswer) {
             timeLeftSpan.textContent = `0s`;
         } else {
             timeLeftSpan.textContent = `${timeLeft}s`;
-        };
-    };
+        }
+    }
     clearChoices(); //Clear the choices of the question that has just been answered
     //Clear the result info after 1 second
     setTimeout(function() {
-        result.textContent = ""
+        result.textContent = "";
     }, 1000);
     //Check if all questions have been answered
     if (questionsArray.length == 0 ||
