@@ -18,6 +18,7 @@ var timerLimit = 60; //configurable value
 var timeLeft = timerLimit;
 var myTimer;
 var questionProgress = 0;
+timeLeftSpan.textContent = `${timerLimit}s`;
 
 //Questions copied from https://www.geeksforgeeks.org/
 var questionsArray = [
@@ -174,7 +175,7 @@ function startQuiz() {
 
 function startTimer() {
     timeLeft--;
-    timeLeftSpan.textContent = timeLeft;
+    timeLeftSpan.textContent = `${timeLeft}s`;
     if (timeLeft === 0) {
         endQuiz(); //Calls the endQuiz function
     }
@@ -263,7 +264,7 @@ function hideEndQuizBlock() {
         endQuizBlock.removeChild(child);
         child = endQuizBlock.lastElementChild;
     };
-    timeLeftSpan.textContent = timerLimit;
+    timeLeftSpan.textContent = `${timerLimit}s`;
 }
 
 //The function that displays the quiz progress, quiz questions and answer choices
@@ -309,7 +310,7 @@ function checkAnswer(userChoice, correctAnswer) {
         result.textContent = "Sorry, wrong answer!";
         result.setAttribute("style", "color : red;");
         timeLeft = timeLeft - 5;
-        timeLeftSpan.textContent = timeLeft;
+        timeLeftSpan.textContent = `${timeLeft}s`;
     };
     clearChoices(); //Clear the choices of the question that has just been answered
     //Clear the result info after 1 second
