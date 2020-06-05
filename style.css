@@ -1,0 +1,49 @@
+h4 {
+    color: white;
+}
+
+h6 {
+    margin: 10px;
+    margin-top: .80em;
+    margin-bottom: .80em;
+    text-align: center;
+    font-family: Roboto, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+ol {
+    padding: 0%
+}
+
+
+/* Home page "Start Quiz" elements: */
+
+#start-quiz-block {
+    margin: 0 auto;
+    margin-top: 25px;
+    border: none;
+    height: auto;
+    width: 75%;
+}
+
+
+/* Quiz in progress elements: */
+
+#quiz-in-progress {
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 25px;
+    border: none;
+    height: auto;
+    width: 50%;
+}
+
+
+/* Result and End Quiz elements: */
+
+#result-and-end-quiz {
+    margin: 0 auto;
+    border: none;
+    height: auto;
+    width: 50%;
+    text-align: center;
+}
